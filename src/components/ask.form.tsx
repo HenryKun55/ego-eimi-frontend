@@ -4,7 +4,6 @@ import { useAuth } from '../hooks/useAuth'
 import { useAskQuery } from '../hooks/useAskQuery'
 
 export function AskForm() {
-  const { token, email, login, logout, isAuthenticated } = useAuth()
   const [form, setForm] = useState({ email: '', password: '' })
   const [question, setQuestion] = useState('')
   const [lastQuestion, setLastQuestion] = useState<string | null>(null)
@@ -13,7 +12,15 @@ export function AskForm() {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const answerRef = useRef<HTMLDivElement>(null)
 
-  const ask = useAskQuery(token)
+  const {
+    login,
+    isLoading: isLoadingLogin,
+    error: loginError,
+    isAuthenticated,
+    data,
+    logout,
+  } = useAuth()
+  const ask = useAskQuery(data?.accessToken)
 
   const handleLogin = async () => {
     setError(null)
@@ -34,7 +41,7 @@ export function AskForm() {
     setAnswer(null)
     setError(null)
     setLastQuestion(question)
-    setQuestion('') // limpa o campo
+    setQuestion('')
 
     ask.mutate(
       { question },
@@ -81,7 +88,14 @@ export function AskForm() {
               setForm((f) => ({ ...f, password: e.target.value }))
             }
           />
-          <Button type="submit" className="w-full">
+
+          {loginError && (
+            <div className="bg-red-100 border border-red-400 p-3 rounded text-sm text-red-600">
+              {loginError.message}
+            </div>
+          )}
+
+          <Button type="submit" className="w-full" disabled={isLoadingLogin}>
             Entrar
           </Button>
         </form>
@@ -89,7 +103,7 @@ export function AskForm() {
         <>
           <div className="flex justify-between items-center">
             <p className="text-sm text-gray-500 italic">
-              Logado como <strong>{email}</strong>
+              Logado como <strong>{data?.email}</strong>
             </p>
             <Button variant="outline" onClick={logout}>
               Sair
