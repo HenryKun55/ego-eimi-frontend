@@ -1,69 +1,103 @@
-# React + TypeScript + Vite
+# 🎨 Ego Eimi - Frontend (TeamBrain)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o frontend do MVP **TeamBrain**, parte do desafio técnico da Ego Eimi. Ele serve como interface de interação com o sistema RAG, permitindo que um usuário autenticado envie perguntas e visualize respostas contextualizadas com base nos documentos que tem permissão para acessar.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⚡ Tecnologias
 
-## Expanding the ESLint configuration
+- **React + Vite**: app moderno e leve
+- **Tailwind CSS**: estilização rápida e responsiva
+- **React Query**: cache e requisições eficientes
+- **TypeScript**: segurança de tipos
+- **Bun**: runtime moderno e rápido
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## ▶️ Como rodar (modo isolado)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 1. Configure o `.env`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+VITE_API_URL=http://localhost:5173
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 2. Instale dependências
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+bun install
 ```
+
+---
+
+### 3. Execute localmente
+
+```bash
+bun run dev
+```
+
+Acesse via: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🐳 Como rodar via Docker (recomendado)
+
+Use o `docker-compose` da raiz do projeto:
+
+```bash
+docker compose up -d
+```
+
+O frontend estará acessível via:
+
+📍 [http://localhost:4173](http://localhost:4173)
+
+---
+
+## 📁 Estrutura
+
+```
+src/
+├── components/
+│   ├── ask.form.tsx         ← formulário principal
+│   ├── query.provider.tsx   ← React Query Provider
+│   └── ui/                  ← botão reutilizável
+├── hooks/
+│   ├── useAuth.ts           ← login automático
+│   └── useAskQuery.ts       ← chamada RAG
+├── lib/
+│   ├── schemas.ts           ← validações
+│   └── utils.ts             ← utilitários gerais
+├── App.tsx
+└── main.tsx
+```
+
+---
+
+## 💬 Comportamento
+
+- Voceê loga com algum usuário **[admin|henrique|felipe|viewer]@empresa.com**
+- Senha padrão: **123456**
+- Mostra o formulário de pergunta e renderiza a resposta.
+- Usa `React Query` para gerenciar a chamada ao backend.
+
+---
+
+## 🧪 Testes
+
+Este frontend não possui testes automatizados implementados, dado o escopo do desafio. Mas está preparado para receber testes com Vitest + Testing Library.
+
+---
+
+## 🌱 Possíveis Melhorias Futuras
+
+- Tela de login com autenticação real
+- Feedback visual de loading/erro
+- Testes de UI com Vitest
+- Temas e acessibilidade
+
+---
+
+> Feito para ser leve, funcional e direto ao ponto, com uma coquinha gelada.
