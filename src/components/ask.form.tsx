@@ -7,6 +7,7 @@ export function AskForm() {
   const { token, email, login, logout, isAuthenticated } = useAuth()
   const [form, setForm] = useState({ email: '', password: '' })
   const [question, setQuestion] = useState('')
+  const [lastQuestion, setLastQuestion] = useState<string | null>(null)
   const [answer, setAnswer] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -21,7 +22,6 @@ export function AskForm() {
       setQuestion('')
       setAnswer(null)
       setError(null)
-
       setTimeout(() => textareaRef.current?.focus(), 100)
     } catch {
       setError('❌ Login inválido')
@@ -33,6 +33,8 @@ export function AskForm() {
 
     setAnswer(null)
     setError(null)
+    setLastQuestion(question)
+    setQuestion('') // limpa o campo
 
     ask.mutate(
       { question },
@@ -125,11 +127,14 @@ export function AskForm() {
             </Button>
           </form>
 
-          {answer && (
+          {lastQuestion && answer && (
             <div
               ref={answerRef}
               className="bg-green-100 border border-green-400 p-3 rounded text-sm whitespace-pre-wrap"
             >
+              <strong>Pergunta:</strong> {lastQuestion}
+              <br />
+              <br />
               <strong>Resposta:</strong> {answer}
             </div>
           )}
